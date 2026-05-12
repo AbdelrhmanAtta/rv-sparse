@@ -42,5 +42,6 @@ gcc -lm -o run challenge.c
 
 # Execute the compiled binary
 ./run
+```
 
 The output will display the results of multiple iterations, comparing the CSR sparse multiplication output against a standard dense matrix-vector multiplication reference to ensure accuracy within acceptable floating-point tolerances.
