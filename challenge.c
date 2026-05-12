@@ -51,31 +51,27 @@ void sparse_multiply(
     }
     
     row_ptrs[0] = 0;
-    int buffer_nnz = 0;
     int current_index = 0;
 
     for(int i = 0; i < rows; ++i)
     {
-        int row_nnz = 0;
         for(int j = 0; j < cols; ++j)
         {
-            int offset = (i*cols) + j;
-            double value = A[offset];
+            double value = A[i * cols + j];
             if(fabs(value) > 1e-12)
             {
-                row_nnz++;
                 values[current_index] = value;
-                col_indices[current_index++] = j;
+                col_indices[current_index] = j;
+                current_index++;
             }
         }
-        buffer_nnz += row_nnz;
-        row_ptrs[i + 1] = buffer_nnz;
+        row_ptrs[i + 1] = current_index;
     }
-    *out_nnz = buffer_nnz;
+    *out_nnz = current_index;
 
     for(int i = 0; i < rows; ++i)
     {
-        double sum = 0.0f;
+        double sum = 0.0; 
         for(int idx = row_ptrs[i]; idx < row_ptrs[i + 1]; ++idx)
         {
             sum += values[idx] * x[col_indices[idx]];
